@@ -1,0 +1,6 @@
+# default kmod blacklist
+
+blacklist pcspkr
+blacklist usbmouse
+blacklist iTCO_wdt
+
