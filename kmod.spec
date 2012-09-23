@@ -2,12 +2,12 @@
 
 Summary:	Linux kernel module handling
 Name:		kmod
-Version:	9
-Release:	10
+Version:	10
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/%{name}-%{version}.tar.xz
-# Source0-md5:	c8ae2d2694fbca2b28e238b30543a0cd
+# Source0-md5:	e2a883c4df15a50f78a7a61d5b64089f
 Source1:	%{name}-blacklist
 Source2:	%{name}-usb
 URL:		http://git.kernel.org/?p=utils/kernel/kmod/kmod.git;a=summary
