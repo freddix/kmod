@@ -1,0 +1,164 @@
+diff -aurN kmod-11.orig/libkmod/libkmod.c kmod-11/libkmod/libkmod.c
+--- kmod-11.orig/libkmod/libkmod.c	2012-11-10 11:36:41.037299615 +0100
++++ kmod-11/libkmod/libkmod.c	2012-11-10 12:03:34.325793654 +0100
+@@ -195,7 +195,7 @@
+ 	return 0;
+ }
+ 
+-static const char *dirname_default_prefix = "/lib/modules";
++static const char *dirname_default_prefix = "/usr/lib/modules";
+ 
+ static char *get_kernel_release(const char *dirname)
+ {
+@@ -217,7 +217,7 @@
+ /**
+  * kmod_new:
+  * @dirname: what to consider as linux module's directory, if NULL
+- *           defaults to /lib/modules/`uname -r`. If it's relative,
++ *           defaults to /usr/lib/modules/`uname -r`. If it's relative,
+  *           it's treated as relative to current the current working
+  *           directory. Otherwise, give an absolute dirname.
+  * @config_paths: ordered array of paths (directories or files) where
+diff -aurN kmod-11.orig/man/depmod.d.xml kmod-11/man/depmod.d.xml
+--- kmod-11.orig/man/depmod.d.xml	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/man/depmod.d.xml	2012-11-10 12:04:11.631117520 +0100
+@@ -68,7 +68,7 @@
+         </term>
+         <listitem>
+           <para>
+-            This allows you to specify the order in which /lib/modules
++	    This allows you to specify the order in which /usr/lib/modules
+             (or other configured module location) subdirectories will
+             be processed by <command>depmod</command>. Directories are
+             listed in order, with the highest priority given to the
+@@ -96,7 +96,7 @@
+             <command>depmod</command> command. It is possible to
+             specify one kernel or all kernels using the * wildcard.
+             <replaceable>modulesubdirectory</replaceable> is the
+-            name of the subdirectory under /lib/modules (or other
++	    name of the subdirectory under /usr/lib/modules (or other
+             module location) where the target module is installed.
+           </para>
+           <para>
+@@ -105,7 +105,7 @@
+             specifying the following command: "override kmod * extra".
+             This will ensure that any matching module name installed
+             under the <command>extra</command> subdirectory within
+-            /lib/modules (or other module location) will take priority
++	    /usr/lib/modules (or other module location) will take priority
+             over any likenamed module already provided by the kernel.
+           </para>
+         </listitem>
+diff -aurN kmod-11.orig/man/depmod.xml kmod-11/man/depmod.xml
+--- kmod-11.orig/man/depmod.xml	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/man/depmod.xml	2012-11-10 12:04:32.711870349 +0100
+@@ -80,7 +80,7 @@
+     </para>
+     <para> <command>depmod</command> creates a list of module dependencies by
+       reading each module under
+-      <filename>/lib/modules/</filename><replaceable>version</replaceable> and
++      <filename>/usr/lib/modules/</filename><replaceable>version</replaceable> and
+       determining what symbols it exports and what symbols it needs.  By
+       default, this list is written to <filename>modules.dep</filename>, and a
+       binary hashed version named <filename>modules.dep.bin</filename>, in the
+@@ -139,7 +139,7 @@
+         <listitem>
+           <para>
+             If your modules are not currently in the (normal) directory
+-            <filename>/lib/modules/</filename><replaceable>version</replaceable>,
++	    <filename>/usr/lib/modules/</filename><replaceable>version</replaceable>,
+             but in a staging area, you can specify a
+             <replaceable>basedir</replaceable> which is prepended to the
+             directory name.  This <replaceable>basedir</replaceable> is
+diff -aurN kmod-11.orig/man/modinfo.xml kmod-11/man/modinfo.xml
+--- kmod-11.orig/man/modinfo.xml	2012-11-10 11:36:41.027299260 +0100
++++ kmod-11/man/modinfo.xml	2012-11-10 12:05:03.072935004 +0100
+@@ -54,7 +54,7 @@
+       <command>modinfo</command> extracts information from the Linux Kernel
+       modules given on the command line.  If the module name is not a filename,
+       then the
+-      <filename>/lib/modules/</filename><replaceable>version</replaceable>
++      <filename>/usr/lib/modules/</filename><replaceable>version</replaceable>
+       directory is searched, as is also done by
+       <citerefentry><refentrytitle>modprobe</refentrytitle><manvolnum>8</manvolnum></citerefentry>
+       when loading kernel modules.
+diff -aurN kmod-11.orig/man/modprobe.xml kmod-11/man/modprobe.xml
+--- kmod-11.orig/man/modprobe.xml	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/man/modprobe.xml	2012-11-10 12:05:17.304443198 +0100
+@@ -78,7 +78,7 @@
+       is no difference between _ and - in module names (automatic
+       underscore conversion is performed).
+       <command>modprobe</command> looks in the module directory
+-      <filename>/lib/modules/`uname -r`</filename> for all
++      <filename>/usr/lib/modules/`uname -r`</filename> for all
+       the modules and other files, except for the optional
+       configuration files in the
+       <filename>/etc/modprobe.d</filename> directory
+diff -aurN kmod-11.orig/man/modules.dep.xml kmod-11/man/modules.dep.xml
+--- kmod-11.orig/man/modules.dep.xml	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/man/modules.dep.xml	2012-11-10 12:05:31.328940187 +0100
+@@ -34,8 +34,8 @@
+   </refnamediv>
+ 
+   <refsynopsisdiv>
+-    <para><filename>/lib/modules/modules.dep</filename></para>
+-    <para><filename>/lib/modules/modules.dep.bin</filename></para>
++      <para><filename>/usr/lib/modules/modules.dep</filename></para>
++      <para><filename>/usr/lib/modules/modules.dep.bin</filename></para>
+   </refsynopsisdiv>
+ 
+   <refsect1><title>DESCRIPTION</title>
+diff -aurN kmod-11.orig/tools/depmod.c kmod-11/tools/depmod.c
+--- kmod-11.orig/tools/depmod.c	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/tools/depmod.c	2012-11-10 12:02:07.227678887 +0100
+@@ -2598,7 +2598,7 @@
+ 	}
+ 
+ 	cfg.dirnamelen = snprintf(cfg.dirname, PATH_MAX,
+-				  "%s/lib/modules/%s",
++				  "%s/usr/lib/modules/%s",
+ 				  root == NULL ? "" : root, cfg.kversion);
+ 
+ 	if (optind == argc)
+diff -aurN kmod-11.orig/tools/modinfo.c kmod-11/tools/modinfo.c
+--- kmod-11.orig/tools/modinfo.c	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/tools/modinfo.c	2012-11-10 12:02:31.731548430 +0100
+@@ -338,7 +338,7 @@
+ 		"\t-0, --null                  Use \\0 instead of \\n\n"
+ 		"\t-F, --field=FIELD           Print only provided FIELD\n"
+ 		"\t-k, --set-version=VERSION   Use VERSION instead of `uname -r`\n"
+-		"\t-b, --basedir=DIR           Use DIR as filesystem root for /lib/modules\n"
++		"\t-b, --basedir=DIR           Use DIR as filesystem root for /usr/lib/modules\n"
+ 		"\t-V, --version               Show version\n"
+ 		"\t-h, --help                  Show this help\n",
+ 		program_invocation_short_name);
+@@ -435,7 +435,7 @@
+ 			}
+ 			kversion = u.release;
+ 		}
+-		snprintf(dirname_buf, sizeof(dirname_buf), "%s/lib/modules/%s",
++		snprintf(dirname_buf, sizeof(dirname_buf), "%s/usr/lib/modules/%s",
+ 			 root, kversion);
+ 		dirname = dirname_buf;
+ 	}
+diff -aurN kmod-11.orig/tools/modprobe.c kmod-11/tools/modprobe.c
+--- kmod-11.orig/tools/modprobe.c	2012-11-10 11:36:41.028299294 +0100
++++ kmod-11/tools/modprobe.c	2012-11-10 12:02:47.813134189 +0100
+@@ -129,7 +129,7 @@
+ 		"\t-n, --show                  Same as --dry-run\n"
+ 
+ 		"\t-C, --config=FILE           Use FILE instead of default search paths\n"
+-		"\t-d, --dirname=DIR           Use DIR as filesystem root for /lib/modules\n"
++		"\t-d, --dirname=DIR           Use DIR as filesystem root for /usr/lib/modules\n"
+ 		"\t-S, --set-version=VERSION   Use VERSION instead of `uname -r`\n"
+ 
+ 		"\t-s, --syslog                print to syslog, not stderr\n"
+@@ -886,7 +886,7 @@
+ 			kversion = u.release;
+ 		}
+ 		snprintf(dirname_buf, sizeof(dirname_buf),
+-				"%s/lib/modules/%s", root,
++				"%s/usr/lib/modules/%s", root,
+ 				kversion);
+ 		dirname = dirname_buf;
+ 	}
