@@ -2,12 +2,12 @@
 
 Summary:	Linux kernel module handling
 Name:		kmod
-Version:	12
+Version:	13
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/%{name}-%{version}.tar.xz
-# Source0-md5:	3d63b146c8ee5a04dfbef4be97f8226b
+# Source0-md5:	d5aba43b9370cd52f3cb35e82a1aa595
 Source1:	%{name}-blacklist
 Source2:	%{name}-usb
 Source3:	%{name}-depmod-search.conf
