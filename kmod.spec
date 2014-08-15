@@ -2,12 +2,12 @@
 
 Summary:	Linux kernel module handling
 Name:		kmod
-Version:	16
+Version:	18
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/%{name}-%{version}.tar.xz
-# Source0-md5:	3006a0287211212501cdfe1211b29f09
+# Source0-md5:	82835c7f01983634e06ca72b4ee30cc6
 Source1:	%{name}-blacklist
 Source2:	%{name}-usb
 Source3:	%{name}-depmod-search.conf
@@ -76,6 +76,8 @@ install -d $RPM_BUILD_ROOT{{/etc/,%{_prefix}/lib}/{depmod,modprobe}.d,%{_sbindir
 %{__make} install \
 	pkgconfigdir=%{_pkgconfigdir} \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 # install symlinks
 for prog in lsmod rmmod insmod modinfo modprobe depmod; do
