@@ -1,11 +1,12 @@
+# based on PLD Linux spec git://git.pld-linux.org/packages/kmod.git
 %bcond_with	tests
 
 Summary:	Linux kernel module handling
 Name:		kmod
 Version:	18
-Release:	1
+Release:	2
 License:	GPL v2+
-Group:		Applications/System
+Group:		Core/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/%{name}-%{version}.tar.xz
 # Source0-md5:	82835c7f01983634e06ca72b4ee30cc6
 Source1:	%{name}-blacklist
